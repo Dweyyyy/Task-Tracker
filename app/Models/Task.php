@@ -7,12 +7,8 @@ use App\Models\User;
 
 class Task extends Model
 {
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
-
     protected $fillable = [
+        'user_id',
         'title',
         'description',
         'status',
@@ -23,4 +19,9 @@ class Task extends Model
     protected $casts = [
         'due_date' => 'date',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

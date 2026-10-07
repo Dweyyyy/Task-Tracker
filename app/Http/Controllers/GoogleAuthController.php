@@ -14,10 +14,30 @@ class GoogleAuthController extends Controller
     }
 
     public function callback()
-    {
-        return response('CALLBACK REACHED LARAVEL', 200);
+{
+    $googleUser = Socialite::driver('google')->user();
+
+    $user = User::where('google_id', $googleUser->id)
+        ->orWhere('email', $googleUser->email)
+        ->first();
+
+    if ($user) {
+        $user->update([
+            'google_id' => $googleUser->id,
+            'name' => $googleUser->name,
+        ]);
+    } else {
+        $user = User::create([
+            'google_id' => $googleUser->id,
+            'name' => $googleUser->name,
+            'email' => $googleUser->email,
+        ]);
     }
 
+    Auth::login($user);
+
+    return redirect()->route('tasks.index');
+}
     public function logout()
     {
         Auth::logout();

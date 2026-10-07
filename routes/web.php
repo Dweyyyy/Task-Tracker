@@ -10,6 +10,10 @@ Route::get('/login', function () {
     return view('auth.login');
 })->name('login');
 
+Route::get('/test-vercel', function () {
+    return response('VERCEL LARAVEL TEST WORKS', 200);
+});
+
 // Google Login
 Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])
     ->name('google.login');
